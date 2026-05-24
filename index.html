@@ -76,7 +76,97 @@
         data-scene="2"
         aria-label="Scene 2"
         aria-hidden="true"
-      ></section>
+      >
+        <img
+          class="scene-bg"
+          src="assets/backgrounds/bg-2-box.png"
+          alt=""
+          role="presentation"
+          decoding="async"
+        />
+
+        <div class="scene-content">
+          <button
+            class="box-stage"
+            type="button"
+            aria-label="Open the gift box"
+            data-box-stage
+          >
+            <img
+              class="box-img box-closed"
+              src="assets/elements/box-closed.png"
+              alt=""
+              role="presentation"
+              decoding="async"
+            />
+            <img
+              class="box-img box-opened"
+              src="assets/elements/box-opened.png"
+              alt=""
+              role="presentation"
+              decoding="async"
+            />
+          </button>
+
+          <div class="icons-stage" data-icons-stage aria-hidden="true">
+            <div class="icon-item" data-icon="matcha">
+              <img src="assets/icons/icon-matcha.png" alt="" role="presentation" decoding="async" />
+              <span class="icon-label">matcha</span>
+            </div>
+            <div class="icon-item" data-icon="doll-box">
+              <img src="assets/icons/icon-doll-box.png" alt="" role="presentation" decoding="async" />
+              <span class="icon-label">design xp</span>
+            </div>
+            <div class="icon-item" data-icon="figma">
+              <img src="assets/icons/icon-figma.png" alt="" role="presentation" decoding="async" />
+              <span class="icon-label">figma forever</span>
+            </div>
+            <div class="icon-item" data-icon="claude">
+              <img src="assets/icons/icon-claude.png" alt="" role="presentation" decoding="async" />
+              <span class="icon-label">ai workflows</span>
+            </div>
+            <div class="icon-item" data-icon="camera">
+              <img src="assets/icons/icon-camera.png" alt="" role="presentation" decoding="async" />
+              <span class="icon-label">always traveling</span>
+            </div>
+            <div class="icon-item" data-icon="doll-figure">
+              <img src="assets/icons/icon-doll-figure.png" alt="" role="presentation" decoding="async" />
+              <span class="icon-label">the brand</span>
+            </div>
+            <div class="icon-item" data-icon="notebook">
+              <img src="assets/icons/icon-notebook.png" alt="" role="presentation" decoding="async" />
+              <span class="icon-label">reflection</span>
+            </div>
+            <div class="icon-item" data-icon="croissant">
+              <img src="assets/icons/icon-croissant.png" alt="" role="presentation" decoding="async" />
+              <span class="icon-label">slow mornings</span>
+            </div>
+            <div class="icon-item" data-icon="phone">
+              <img src="assets/icons/icon-phone.png" alt="" role="presentation" decoding="async" />
+              <span class="icon-label">content</span>
+            </div>
+            <div class="icon-item" data-icon="books">
+              <img src="assets/icons/icon-books.png" alt="" role="presentation" decoding="async" />
+              <span class="icon-label">always learning</span>
+            </div>
+          </div>
+
+          <div class="confetti-stage" data-confetti-stage aria-hidden="true"></div>
+
+          <h2 class="scene-caption">this year, in objects ✨</h2>
+        </div>
+
+        <p class="scene-hint scene-hint--delayed">tap to continue</p>
+
+        <button
+          class="tap-zone"
+          type="button"
+          aria-label="Tap to continue"
+          data-tap-advance="2"
+          data-disabled="true"
+          tabindex="-1"
+        ></button>
+      </section>
 
       <section
         class="scene scene-3"

@@ -239,6 +239,152 @@ img {
   opacity: 0;
 }
 
+/* Hint variant that starts hidden and is faded in by JS later in a scene. */
+.scene-hint--delayed {
+  opacity: 0;
+  animation-play-state: paused;
+}
+
+.scene-hint--delayed.is-revealed {
+  animation-play-state: running;
+}
+
+/* Tap zone disabled until a scene's interaction makes it tappable. */
+.tap-zone[data-disabled="true"] {
+  pointer-events: none;
+}
+
+/* ---------- Scene 2 — Year in 10 Objects (Box) ---------- */
+.scene-2 .box-stage {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  pointer-events: auto;
+  transform-origin: center;
+  animation: box-wiggle 2s ease-in-out infinite;
+  -webkit-tap-highlight-color: transparent;
+  z-index: 1;
+}
+
+.scene-2 .box-stage:focus-visible {
+  outline: 2px solid var(--color-text-dark);
+  outline-offset: 6px;
+  border-radius: 12px;
+}
+
+.scene-2 .box-stage.is-opened {
+  animation: none;
+  cursor: default;
+}
+
+.scene-2 .box-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform-origin: center;
+}
+
+.scene-2 .box-opened {
+  opacity: 0;
+}
+
+@keyframes box-wiggle {
+  0%,
+  100% {
+    transform: rotate(-2deg);
+  }
+  50% {
+    transform: rotate(2deg);
+  }
+}
+
+.scene-2 .icons-stage {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.scene-2 .icon-item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.scene-2 .icon-item img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 2px 4px rgba(200, 102, 94, 0.18));
+}
+
+.scene-2 .icon-label {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--color-text-dark);
+  opacity: 0;
+  white-space: nowrap;
+  text-align: center;
+  letter-spacing: 0.01em;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
+}
+
+.scene-2 .confetti-stage {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  overflow: hidden;
+}
+
+.scene-2 .confetti-piece {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.scene-2 .scene-caption {
+  position: absolute;
+  bottom: calc(15vh + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-hand);
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--color-text-dark);
+  opacity: 0.7;
+  text-align: center;
+  white-space: nowrap;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
+  pointer-events: none;
+  z-index: 2;
+}
+
 /* ---------- Reduced motion fallback ---------- */
 @media (prefers-reduced-motion: reduce) {
   *,

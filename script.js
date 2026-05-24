@@ -131,17 +131,298 @@ function enterScene1() {
   }
 }
 
+/* ---------- Scene 2 — Year in 10 Objects (Box) ---------- */
+
+// Scatter positions in DOM order: matcha, doll-box, figma, claude, camera,
+// doll-figure, notebook, croissant, phone, books. (See SPEC.md.)
+const SCENE2_SCATTER = [
+  { x: -130, y: -100, rot: -8 },
+  { x: 110, y: -130, rot: 10 },
+  { x: -140, y: 30, rot: -5 },
+  { x: 120, y: 20, rot: 6 },
+  { x: -80, y: -180, rot: -12 },
+  { x: 70, y: 130, rot: 4 },
+  { x: -110, y: 100, rot: -3 },
+  { x: 140, y: 100, rot: 8 },
+  { x: 0, y: -200, rot: 0 },
+  { x: 0, y: 180, rot: -5 },
+];
+
+const SCENE2_CONFETTI_COLORS = [
+  "var(--color-coral)",
+  "var(--color-sun)",
+  "var(--color-pink-sky)",
+  "var(--color-cream)",
+];
+
+const SVG_NS = "http://www.w3.org/2000/svg";
+
+function makeConfettiPiece(index) {
+  const wrap = document.createElement("span");
+  wrap.className = "confetti-piece";
+
+  const svg = document.createElementNS(SVG_NS, "svg");
+  const size = 8 + Math.floor(Math.random() * 6);
+  svg.setAttribute("width", String(size));
+  svg.setAttribute("height", String(size));
+  svg.setAttribute("viewBox", "0 0 12 12");
+  svg.setAttribute("aria-hidden", "true");
+
+  const color = SCENE2_CONFETTI_COLORS[index % SCENE2_CONFETTI_COLORS.length];
+  const shape = index % 4;
+
+  let el;
+  if (shape === 0) {
+    el = document.createElementNS(SVG_NS, "circle");
+    el.setAttribute("cx", "6");
+    el.setAttribute("cy", "6");
+    el.setAttribute("r", "4");
+  } else if (shape === 1) {
+    el = document.createElementNS(SVG_NS, "rect");
+    el.setAttribute("x", "2");
+    el.setAttribute("y", "4");
+    el.setAttribute("width", "8");
+    el.setAttribute("height", "4");
+    el.setAttribute("rx", "1");
+  } else if (shape === 2) {
+    // 4-point sparkle
+    el = document.createElementNS(SVG_NS, "path");
+    el.setAttribute("d", "M6 0 L7 5 L12 6 L7 7 L6 12 L5 7 L0 6 L5 5 Z");
+  } else {
+    // 5-point star
+    el = document.createElementNS(SVG_NS, "polygon");
+    el.setAttribute(
+      "points",
+      "6,1 7.4,4.6 11,5 8,7.5 9,11 6,9 3,11 4,7.5 1,5 4.6,4.6"
+    );
+  }
+  el.setAttribute("fill", color);
+  svg.appendChild(el);
+  wrap.appendChild(svg);
+  return wrap;
+}
+
+function burstConfetti(stage, gsap) {
+  const N = 12;
+  const pieces = [];
+  for (let i = 0; i < N; i++) {
+    const piece = makeConfettiPiece(i);
+    stage.appendChild(piece);
+    pieces.push(piece);
+  }
+
+  // Center each piece via GSAP transform so x/y math is relative to center.
+  gsap.set(pieces, { xPercent: -50, yPercent: -50 });
+
+  pieces.forEach((p, i) => {
+    const angle = (i / N) * Math.PI * 2 + (Math.random() - 0.5) * 0.5;
+    const dist = 120 + Math.random() * 90;
+    const tx = Math.cos(angle) * dist;
+    const ty = Math.sin(angle) * dist - 30; // slight upward bias
+    const rot = (Math.random() - 0.5) * 540;
+
+    gsap.fromTo(
+      p,
+      { opacity: 0, x: 0, y: 0, scale: 0.4, rotation: 0 },
+      {
+        opacity: 0.95,
+        x: tx,
+        y: ty,
+        scale: 1,
+        rotation: rot,
+        duration: 1.2,
+        ease: "power2.out",
+        delay: i * 0.02,
+      }
+    );
+
+    gsap.to(p, {
+      opacity: 0,
+      duration: 0.4,
+      delay: i * 0.02 + 1.1,
+      onComplete: () => p.remove(),
+    });
+  });
+}
+
+function startIconBobs(items, gsap) {
+  items.forEach((it) => {
+    const dur = 2 + Math.random();
+    const dy = 8 + Math.random() * 4;
+    gsap.to(it, {
+      y: `-=${dy}`,
+      duration: dur,
+      yoyo: true,
+      repeat: -1,
+      ease: "sine.inOut",
+      delay: Math.random() * 0.5,
+    });
+  });
+}
+
+function enterScene2() {
+  const sceneEl = document.querySelector(".scene-2");
+  if (!sceneEl) return;
+
+  const boxStage = sceneEl.querySelector("[data-box-stage]");
+  const boxClosed = sceneEl.querySelector(".box-closed");
+  const boxOpened = sceneEl.querySelector(".box-opened");
+  const iconsStage = sceneEl.querySelector("[data-icons-stage]");
+  const iconItems = iconsStage
+    ? Array.from(iconsStage.querySelectorAll(".icon-item"))
+    : [];
+  const labels = iconItems.map((i) => i.querySelector(".icon-label"));
+  const confettiStage = sceneEl.querySelector("[data-confetti-stage]");
+  const hint = sceneEl.querySelector(".scene-hint");
+  const tapZone = sceneEl.querySelector(".tap-zone");
+
+  if (!boxStage || !iconItems.length || !tapZone) return;
+
+  tapZone.setAttribute("data-disabled", "true");
+
+  const reduced = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+  const gsap = window.gsap;
+
+  // Snap-to-final fallback for reduced motion or missing GSAP.
+  const snapToFinal = () => {
+    iconItems.forEach((it, i) => {
+      const p = SCENE2_SCATTER[i];
+      it.style.transform = `translate(calc(-50% + ${p.x}px), calc(-50% + ${p.y}px)) rotate(${p.rot}deg) scale(1)`;
+      it.style.opacity = "1";
+    });
+    labels.forEach((l) => {
+      if (l) l.style.opacity = "0.8";
+    });
+    if (boxClosed) boxClosed.style.opacity = "0";
+    if (boxOpened) boxOpened.style.opacity = "1";
+    boxStage.classList.add("is-opened");
+    boxStage.setAttribute("aria-disabled", "true");
+    if (hint) {
+      hint.classList.add("is-revealed");
+      hint.style.opacity = "0.6";
+    }
+    tapZone.setAttribute("data-disabled", "false");
+  };
+
+  if (reduced || !gsap) {
+    snapToFinal();
+    return;
+  }
+
+  // Prime icons + confetti pieces with GSAP-friendly transforms so x/y math
+  // is relative to the scene-content center.
+  gsap.set(iconItems, {
+    xPercent: -50,
+    yPercent: -50,
+    x: 0,
+    y: 0,
+    scale: 0,
+    opacity: 0,
+    rotation: 0,
+  });
+
+  let opened = false;
+  const openBox = () => {
+    if (opened) return;
+    opened = true;
+
+    const sound = window.__birthday?.sound;
+    sound?.play("pop");
+
+    const tl = gsap.timeline();
+
+    // 1. Anticipation: scale up then settle (~0.15s total).
+    tl.to(boxStage, { scale: 1.1, duration: 0.075, ease: "power2.out" }).to(
+      boxStage,
+      { scale: 1, duration: 0.075, ease: "back.out(2)" }
+    );
+
+    // 2. Cross-fade closed → opened (same position, 0.2s).
+    tl.to(boxClosed, { opacity: 0, duration: 0.2 }, ">").to(
+      boxOpened,
+      { opacity: 1, duration: 0.2 },
+      "<"
+    );
+
+    // 3. Stop the wiggle and disable the box button.
+    tl.call(() => {
+      boxStage.classList.add("is-opened");
+      boxStage.setAttribute("aria-disabled", "true");
+    });
+
+    // 4 + 5. Icon burst and confetti happen at the same moment.
+    tl.addLabel("burst");
+    tl.to(
+      iconItems,
+      {
+        x: (i) => SCENE2_SCATTER[i].x,
+        y: (i) => SCENE2_SCATTER[i].y,
+        rotation: (i) => SCENE2_SCATTER[i].rot,
+        scale: 1,
+        opacity: 1,
+        duration: 0.6,
+        ease: "back.out(1.7)",
+        stagger: 0.08,
+      },
+      "burst"
+    );
+    tl.call(() => burstConfetti(confettiStage, gsap), [], "burst");
+
+    // 6. Labels fade in once the icons have mostly settled.
+    tl.to(
+      labels.filter(Boolean),
+      {
+        opacity: 0.8,
+        duration: 0.4,
+        stagger: 0.05,
+        ease: "power2.out",
+      },
+      "+=0.2"
+    );
+
+    // 7. Idle bobbing per icon (independent infinite tweens).
+    tl.call(() => startIconBobs(iconItems, gsap));
+
+    // 8. Reveal "tap to continue" hint.
+    if (hint) {
+      tl.to(
+        hint,
+        {
+          opacity: 0.6,
+          duration: 0.6,
+          ease: "power2.out",
+          onStart: () => hint.classList.add("is-revealed"),
+        },
+        "+=0.2"
+      );
+    }
+
+    // 9. Enable the full-screen tap-zone for advancing to scene 3.
+    tl.call(() => tapZone.setAttribute("data-disabled", "false"));
+  };
+
+  boxStage.addEventListener("click", openBox);
+}
+
 function handleSceneEntered(event) {
   const n = event.detail?.scene;
   if (n === 1 && !sceneEnteredOnce.has(1)) {
     sceneEnteredOnce.add(1);
     enterScene1();
+  } else if (n === 2 && !sceneEnteredOnce.has(2)) {
+    sceneEnteredOnce.add(2);
+    enterScene2();
   }
 }
 
 function setupTapZones(scenes) {
   const scene1Tap = document.querySelector('.scene-1 [data-tap-advance="1"]');
   scene1Tap?.addEventListener("click", () => scenes.next());
+
+  const scene2Tap = document.querySelector('.scene-2 [data-tap-advance="2"]');
+  scene2Tap?.addEventListener("click", () => scenes.next());
 }
 
 /* ---------- Init ---------- */
