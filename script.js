@@ -134,18 +134,20 @@ function enterScene1() {
 /* ---------- Scene 2 — Year in 10 Objects (Box) ---------- */
 
 // Scatter positions in DOM order: matcha, doll-box, figma, claude, camera,
-// doll-figure, notebook, croissant, phone, books. (See SPEC.md.)
+// doll-figure, notebook, croissant, phone, books.
+// All y values are NEGATIVE so icons burst UP from the box (which is anchored
+// near the bottom of the scene).
 const SCENE2_SCATTER = [
-  { x: -130, y: -100, rot: -8 },
-  { x: 110, y: -130, rot: 10 },
-  { x: -140, y: 30, rot: -5 },
-  { x: 120, y: 20, rot: 6 },
-  { x: -80, y: -180, rot: -12 },
-  { x: 70, y: 130, rot: 4 },
-  { x: -110, y: 100, rot: -3 },
-  { x: 140, y: 100, rot: 8 },
-  { x: 0, y: -200, rot: 0 },
-  { x: 0, y: 180, rot: -5 },
+  { x: -130, y: -200, rot: -8 },
+  { x: 110, y: -240, rot: 10 },
+  { x: -150, y: -100, rot: -5 },
+  { x: 130, y: -120, rot: 6 },
+  { x: -60, y: -320, rot: -12 },
+  { x: 80, y: -310, rot: 4 },
+  { x: -120, y: -50, rot: -3 },
+  { x: 140, y: -70, rot: 8 },
+  { x: 0, y: -380, rot: 0 },
+  { x: 0, y: -180, rot: -5 },
 ];
 
 const SCENE2_CONFETTI_COLORS = [
@@ -282,6 +284,20 @@ function enterScene2() {
 
   if (!boxStage || !iconItems.length || !tapZone) return;
 
+  // Compute the box center relative to the scene so icons + confetti can use
+  // it as their (0, 0) origin. The box is anchored toward the bottom, so this
+  // must be measured at runtime rather than assumed to be 50%/50%.
+  const syncBoxCenter = () => {
+    const sceneRect = sceneEl.getBoundingClientRect();
+    const boxRect = boxStage.getBoundingClientRect();
+    const cx = boxRect.left - sceneRect.left + boxRect.width / 2;
+    const cy = boxRect.top - sceneRect.top + boxRect.height / 2;
+    sceneEl.style.setProperty("--box-center-x", `${cx}px`);
+    sceneEl.style.setProperty("--box-center-y", `${cy}px`);
+  };
+  syncBoxCenter();
+  window.addEventListener("resize", syncBoxCenter);
+
   tapZone.setAttribute("data-disabled", "true");
 
   const reduced = window.matchMedia(
@@ -305,7 +321,7 @@ function enterScene2() {
     boxStage.setAttribute("aria-disabled", "true");
     if (hint) {
       hint.classList.add("is-revealed");
-      hint.style.opacity = "0.6";
+      hint.style.opacity = "0.85";
     }
     tapZone.setAttribute("data-disabled", "false");
   };
@@ -399,7 +415,7 @@ function enterScene2() {
       tl.to(
         hint,
         {
-          opacity: 0.6,
+          opacity: 0.85,
           duration: 0.6,
           ease: "power2.out",
           onStart: () => hint.classList.add("is-revealed"),
