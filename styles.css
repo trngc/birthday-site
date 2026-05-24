@@ -355,7 +355,6 @@ img {
   inset: 0;
   pointer-events: none;
   z-index: 3;
-  overflow: hidden;
 }
 
 .scene-2 .confetti-piece {

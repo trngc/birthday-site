@@ -149,10 +149,11 @@ const SCENE2_SCATTER = [
 ];
 
 const SCENE2_CONFETTI_COLORS = [
-  "var(--color-coral)",
-  "var(--color-sun)",
-  "var(--color-pink-sky)",
-  "var(--color-cream)",
+  "#E89888",
+  "#F0A858",
+  "#C8665E",
+  "#FFF8EB",
+  "#FBE5D0",
 ];
 
 const SVG_NS = "http://www.w3.org/2000/svg";
@@ -162,11 +163,13 @@ function makeConfettiPiece(index) {
   wrap.className = "confetti-piece";
 
   const svg = document.createElementNS(SVG_NS, "svg");
-  const size = 8 + Math.floor(Math.random() * 6);
+  const size = 14 + Math.floor(Math.random() * 10);
   svg.setAttribute("width", String(size));
   svg.setAttribute("height", String(size));
   svg.setAttribute("viewBox", "0 0 12 12");
   svg.setAttribute("aria-hidden", "true");
+  svg.style.filter = "drop-shadow(0 2px 3px rgba(200, 102, 94, 0.35))";
+  svg.style.display = "block";
 
   const color = SCENE2_CONFETTI_COLORS[index % SCENE2_CONFETTI_COLORS.length];
   const shape = index % 4;
@@ -203,7 +206,7 @@ function makeConfettiPiece(index) {
 }
 
 function burstConfetti(stage, gsap) {
-  const N = 12;
+  const N = 18;
   const pieces = [];
   for (let i = 0; i < N; i++) {
     const piece = makeConfettiPiece(i);
@@ -212,11 +215,11 @@ function burstConfetti(stage, gsap) {
   }
 
   // Center each piece via GSAP transform so x/y math is relative to center.
-  gsap.set(pieces, { xPercent: -50, yPercent: -50 });
+  gsap.set(pieces, { xPercent: -50, yPercent: -50, x: 0, y: 0 });
 
   pieces.forEach((p, i) => {
     const angle = (i / N) * Math.PI * 2 + (Math.random() - 0.5) * 0.5;
-    const dist = 120 + Math.random() * 90;
+    const dist = 110 + Math.random() * 80;
     const tx = Math.cos(angle) * dist;
     const ty = Math.sin(angle) * dist - 30; // slight upward bias
     const rot = (Math.random() - 0.5) * 540;
@@ -225,12 +228,12 @@ function burstConfetti(stage, gsap) {
       p,
       { opacity: 0, x: 0, y: 0, scale: 0.4, rotation: 0 },
       {
-        opacity: 0.95,
+        opacity: 1,
         x: tx,
         y: ty,
-        scale: 1,
+        scale: 1.1,
         rotation: rot,
-        duration: 1.2,
+        duration: 1.4,
         ease: "power2.out",
         delay: i * 0.02,
       }
@@ -238,8 +241,9 @@ function burstConfetti(stage, gsap) {
 
     gsap.to(p, {
       opacity: 0,
-      duration: 0.4,
-      delay: i * 0.02 + 1.1,
+      duration: 0.6,
+      delay: i * 0.02 + 1.2,
+      ease: "power1.in",
       onComplete: () => p.remove(),
     });
   });
@@ -333,18 +337,23 @@ function enterScene2() {
 
     const tl = gsap.timeline();
 
-    // 1. Anticipation: scale up then settle (~0.15s total).
-    tl.to(boxStage, { scale: 1.1, duration: 0.075, ease: "power2.out" }).to(
-      boxStage,
-      { scale: 1, duration: 0.075, ease: "back.out(2)" }
-    );
+    // 1. Anticipation: scale + rotate, then settle (~0.25s).
+    tl.to(boxStage, {
+      scale: 1.15,
+      rotation: -4,
+      duration: 0.12,
+      ease: "power2.out",
+    }).to(boxStage, {
+      scale: 1.05,
+      rotation: 2,
+      duration: 0.13,
+      ease: "power2.out",
+    });
 
-    // 2. Cross-fade closed → opened (same position, 0.2s).
-    tl.to(boxClosed, { opacity: 0, duration: 0.2 }, ">").to(
-      boxOpened,
-      { opacity: 1, duration: 0.2 },
-      "<"
-    );
+    // 2. Cross-fade closed → opened with a small settle (0.3s).
+    tl.to(boxClosed, { opacity: 0, duration: 0.3, ease: "power2.out" }, ">")
+      .to(boxOpened, { opacity: 1, duration: 0.3, ease: "power2.out" }, "<")
+      .to(boxStage, { scale: 1, rotation: 0, duration: 0.3, ease: "back.out(2)" }, "<");
 
     // 3. Stop the wiggle and disable the box button.
     tl.call(() => {
