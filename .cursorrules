@@ -1,0 +1,96 @@
+# Birthday Site — Cursor Rules
+
+## Project Overview
+A personal interactive birthday website built as a tap-to-advance storybook experience.
+The user (Serena/Trang) is a Product Designer. This site is a self-celebration of her birthday year — reflecting on achievements, sharing notes to past/future self, and making a wish.
+
+## Tech Stack
+- **HTML/CSS/JS Vanilla** (no framework)
+- **GSAP + ScrollTrigger** via CDN (for animations)
+- **Google Fonts**: Fraunces (display serif), Caveat (handwritten), Inter (body sans)
+- **No build tools** — direct browser-runnable
+- **Mobile-only** (9:16 ratio, no desktop layout)
+
+## Design System
+- **Aesthetic**: Soft pastel, 3D claymorphism elements, dreamy and warm
+- **Palette**:
+  - Pink sky: `#F5B5AE`
+  - Peach/cream: `#FCDBB8`, `#FBE5D0`
+  - Coral accent: `#E89888`
+  - Warm sun: `#F0A858`
+  - Soft cream text bg: `#FFF8EB`
+  - Dark coral text: `#C8665E`
+- **Typography**:
+  - Headings: Fraunces (serif), weight 500-600
+  - Handwritten/letters: Caveat
+  - Body: Inter, weight 400
+- **No emojis in headings**. Sparingly in captions (✨ 🤍 🕯️).
+- **Sentence case** for all UI text.
+
+## Animation Principles
+- Soft, gentle easing — never harsh
+- Default ease: `cubic-bezier(0.34, 1.56, 0.64, 1)` for entrances (slight bounce)
+- Default duration: 0.6s for transitions, 0.4s for micro-interactions
+- Idle animations: subtle, low amplitude (don't distract from content)
+- All taps must give visual feedback within 100ms
+
+## App Structure
+This is a **tap-to-advance** storybook, NOT a scroll site.
+- Single viewport, full screen
+- Each scene is a "page" — tap to go to next
+- Some scenes have **internal interactions** before advancing (book pages, envelopes)
+- Mobile-only, optimized for 375x812 (iPhone X+) and larger phones
+
+## Scene Flow (5 scenes)
+1. **Hero** → tap anywhere → next
+2. **Box closed** → tap box → opens with icons burst → tap anywhere → next
+3. **Book closed "Year One"** → tap → opens to page 1 → tap → page 2 → ... → page 4 → tap → next
+4. **Polaroids + 2 envelopes** → tap envelope 1 or 2 → opens with letter → tap again to close → after both opened at least once, auto-advance
+5. **Cake with lit candle** → tap candle → flame out + smoke + final message → END
+
+## Code Style
+- Vanilla JS with ES6+ syntax
+- Use `const` and `let`, never `var`
+- Async/await over promises where possible
+- Comment major sections, skip obvious comments
+- BEM-ish CSS class naming: `.scene-1`, `.scene-1__title`, `.envelope--opened`
+- One state class per element: `is-active`, `is-opened`, `is-hidden`
+
+## File Naming
+- HTML: `index.html`
+- CSS: `styles.css` (single file, organized by scene)
+- JS: `script.js` (single file, organized by scene)
+- Assets in `/assets/[category]/`
+
+## Asset Paths (already in folder)
+- Backgrounds: `assets/backgrounds/bg-{1-5}-{name}.png`
+- Elements: `assets/elements/{box,book,envelope}-{closed,opened}.png`, `assets/elements/cake-lit.svg`
+- Icons: `assets/icons/icon-{name}.png` (10 icons)
+- Pages: `assets/pages/page-{1-4}-{name}.png`
+- Photos: `assets/photos/photo-{1-3}.png`
+
+## Build Order
+Build incrementally, scene by scene. After each phase, test before moving on.
+1. Skeleton (HTML structure, scene container, navigation logic)
+2. Scene 1 (hero)
+3. Scene 2 (box explosion)
+4. Scene 3 (book pages)
+5. Scene 4 (letters toggle)
+6. Scene 5 (cake blow)
+7. Polish (sound toggle, transitions, deploy)
+
+## Don't
+- Don't use frameworks (React, Vue, etc.)
+- Don't add desktop layouts
+- Don't use Tailwind (vanilla CSS only for simplicity)
+- Don't use scroll behavior (tap-to-advance only)
+- Don't use emojis in long copy or headings
+- Don't add features the user didn't request
+
+## Do
+- Comment GSAP timelines for clarity
+- Use CSS variables for all colors
+- Preload critical assets to avoid flash
+- Lazy-load scenes 2-5 (only scene 1 loads upfront)
+- Provide reduced-motion fallback for users with `prefers-reduced-motion`
+- Make every tap target at least 48x48px

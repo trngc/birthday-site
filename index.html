@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#F5B5AE" />
+    <title>Happy Birthday ✨</title>
+
+    <!-- Google Fonts: Fraunces (display serif), Caveat (handwritten), Inter (body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- GSAP 3.x + ScrollTrigger via CDN -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+      defer
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
+      defer
+    ></script>
+
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Sound toggle: always visible, top-right -->
+    <button
+      class="sound-toggle"
+      type="button"
+      aria-label="Toggle sound"
+      aria-pressed="false"
+      data-sound-toggle
+    >
+      <span class="sound-toggle__icon" aria-hidden="true">🔇</span>
+    </button>
+
+    <!-- Stage holds all 5 scenes -->
+    <main class="stage" data-stage>
+      <section
+        class="scene scene-1 is-active"
+        data-scene="1"
+        aria-label="Scene 1"
+      >
+        <img
+          class="scene-bg"
+          src="assets/backgrounds/bg-1-hero.png"
+          alt=""
+          role="presentation"
+          decoding="async"
+        />
+
+        <div class="scene-content">
+          <h1 class="hero-title">Today is a special day</h1>
+          <p class="hero-subtitle">May 24 · A trip around the sun</p>
+        </div>
+
+        <p class="scene-hint">tap anywhere to begin</p>
+
+        <button
+          class="tap-zone"
+          type="button"
+          aria-label="Tap to begin"
+          data-tap-advance="1"
+        ></button>
+      </section>
+
+      <section
+        class="scene scene-2"
+        data-scene="2"
+        aria-label="Scene 2"
+        aria-hidden="true"
+      ></section>
+
+      <section
+        class="scene scene-3"
+        data-scene="3"
+        aria-label="Scene 3"
+        aria-hidden="true"
+      ></section>
+
+      <section
+        class="scene scene-4"
+        data-scene="4"
+        aria-label="Scene 4"
+        aria-hidden="true"
+      ></section>
+
+      <section
+        class="scene scene-5"
+        data-scene="5"
+        aria-label="Scene 5"
+        aria-hidden="true"
+      ></section>
+    </main>
+
+    <script src="script.js" defer></script>
+  </body>
+</html>

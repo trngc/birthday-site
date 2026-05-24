@@ -1,0 +1,259 @@
+/* =========================================================
+   Birthday Site — Global Styles
+   Mobile-only · tap-to-advance storybook
+   ========================================================= */
+
+/* ---------- Design tokens ---------- */
+:root {
+  /* Palette */
+  --color-pink-sky: #f5b5ae;
+  --color-peach: #fcdbb8;
+  --color-cream: #fbe5d0;
+  --color-coral: #e89888;
+  --color-sun: #f0a858;
+  --color-text-bg: #fff8eb;
+  --color-text-dark: #c8665e;
+  --color-ink: #4a2f2a;
+  --color-smoke: #c9bdb5;
+
+  /* Typography */
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-hand: "Caveat", "Brush Script MT", cursive;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+
+  /* Motion */
+  --ease-soft: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-transition: 0.6s;
+  --dur-micro: 0.4s;
+
+  /* Layout */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+}
+
+/* ---------- Reset ---------- */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-ink);
+  background: var(--color-text-bg);
+  position: fixed;
+  inset: 0;
+  touch-action: manipulation;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+  user-drag: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+/* ---------- Stage / Scenes ---------- */
+.stage {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--dur-transition) var(--ease-out),
+    visibility 0s linear var(--dur-transition);
+}
+
+.scene.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity var(--dur-transition) var(--ease-out),
+    visibility 0s linear 0s;
+}
+
+/* ---------- Sound toggle ---------- */
+.sound-toggle {
+  position: fixed;
+  top: calc(12px + var(--safe-top));
+  right: calc(12px + var(--safe-right));
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 248, 235, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 2px 8px rgba(200, 102, 94, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  line-height: 1;
+  z-index: 100;
+  transition: transform var(--dur-micro) var(--ease-soft),
+    background var(--dur-micro) var(--ease-out);
+}
+
+.sound-toggle:active {
+  transform: scale(0.92);
+}
+
+.sound-toggle.is-on {
+  background: rgba(232, 152, 136, 0.85);
+}
+
+.sound-toggle__icon {
+  display: inline-block;
+  pointer-events: none;
+}
+
+/* ---------- Shared scene primitives ---------- */
+.scene-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.scene-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 24px);
+  padding-right: calc(env(safe-area-inset-right, 0px) + 24px);
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 24px);
+  padding-left: calc(env(safe-area-inset-left, 0px) + 24px);
+  pointer-events: none;
+}
+
+.scene-hint {
+  position: absolute;
+  bottom: calc(8vh + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  font-family: var(--font-hand);
+  font-size: 1.1rem;
+  color: var(--color-text-dark);
+  opacity: 0.6;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: hint-bob 2s ease-in-out infinite;
+}
+
+.tap-zone {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+@keyframes hint-bob {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-4px);
+  }
+}
+
+/* ---------- Scene 1 — Hero ---------- */
+.scene-1 .hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 8vw, 3rem);
+  font-weight: 500;
+  color: var(--color-text-dark);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
+  /* Starts hidden; GSAP fades to 1 on scene enter. */
+  opacity: 0;
+}
+
+.scene-1 .hero-subtitle {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--color-text-dark);
+  margin-top: 0.5rem;
+  letter-spacing: 0.02em;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
+  /* Final visual opacity is 0.7; starts at 0 so GSAP can fade in cleanly. */
+  opacity: 0;
+}
+
+/* ---------- Reduced motion fallback ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.2s !important;
+  }
+
+  .scene {
+    transition: opacity 0.2s linear, visibility 0s linear 0.2s;
+  }
+
+  .scene.is-active {
+    transition: opacity 0.2s linear, visibility 0s linear 0s;
+  }
+}
