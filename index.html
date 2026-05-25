@@ -7,7 +7,25 @@
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
     />
     <meta name="theme-color" content="#F5B5AE" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <title>Happy Birthday ✨</title>
+
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+
+    <!-- Preload Scene 1 + Scene 2 critical assets -->
+    <link
+      rel="preload"
+      href="assets/backgrounds/bg-1-hero.png"
+      as="image"
+      type="image/png"
+    />
+    <link
+      rel="preload"
+      href="assets/elements/box-closed.png"
+      as="image"
+      type="image/png"
+    />
 
     <!-- Google Fonts: Fraunces (display serif), Caveat (handwritten), Inter (body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -30,6 +48,11 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <!-- Preloader: cream screen while critical assets load -->
+    <div class="preloader" data-preloader aria-live="polite" aria-busy="true">
+      <p class="preloader__text">loading<span class="preloader__dots">...</span></p>
+    </div>
+
     <!-- Sound toggle: always visible, top-right -->
     <button
       class="sound-toggle"
@@ -53,12 +76,13 @@
           src="assets/backgrounds/bg-1-hero.png"
           alt=""
           role="presentation"
+          fetchpriority="high"
           decoding="async"
         />
 
         <div class="scene-content">
           <h1 class="hero-title">Today is a special day</h1>
-          <p class="hero-subtitle">May 24 · A trip around the sun</p>
+          <p class="hero-subtitle">May 18 · A trip around the sun</p>
         </div>
 
         <p class="scene-hint">tap anywhere to begin</p>
@@ -82,10 +106,12 @@
           src="assets/backgrounds/bg-2-box.png"
           alt=""
           role="presentation"
-          decoding="async"
+          loading="lazy" decoding="async"
         />
 
         <div class="scene-content">
+          <h2 class="scene-caption">this year, in objects ✨</h2>
+
           <button
             class="box-stage"
             type="button"
@@ -97,63 +123,61 @@
               src="assets/elements/box-closed.png"
               alt=""
               role="presentation"
-              decoding="async"
+              loading="lazy" decoding="async"
             />
             <img
               class="box-img box-opened"
               src="assets/elements/box-opened.png"
               alt=""
               role="presentation"
-              decoding="async"
+              loading="lazy" decoding="async"
             />
           </button>
 
           <div class="icons-stage" data-icons-stage aria-hidden="true">
             <div class="icon-item" data-icon="matcha">
-              <img src="assets/icons/icon-matcha.png" alt="" role="presentation" decoding="async" />
+              <img src="assets/icons/icon-matcha.png" alt="" role="presentation" loading="lazy" decoding="async" />
               <span class="icon-label">matcha</span>
             </div>
             <div class="icon-item" data-icon="doll-box">
-              <img src="assets/icons/icon-doll-box.png" alt="" role="presentation" decoding="async" />
+              <img src="assets/icons/icon-doll-box.png" alt="" role="presentation" loading="lazy" decoding="async" />
               <span class="icon-label">design xp</span>
             </div>
             <div class="icon-item" data-icon="figma">
-              <img src="assets/icons/icon-figma.png" alt="" role="presentation" decoding="async" />
+              <img src="assets/icons/icon-figma.png" alt="" role="presentation" loading="lazy" decoding="async" />
               <span class="icon-label">figma forever</span>
             </div>
             <div class="icon-item" data-icon="claude">
-              <img src="assets/icons/icon-claude.png" alt="" role="presentation" decoding="async" />
+              <img src="assets/icons/icon-claude.png" alt="" role="presentation" loading="lazy" decoding="async" />
               <span class="icon-label">ai workflows</span>
             </div>
             <div class="icon-item" data-icon="camera">
-              <img src="assets/icons/icon-camera.png" alt="" role="presentation" decoding="async" />
+              <img src="assets/icons/icon-camera.png" alt="" role="presentation" loading="lazy" decoding="async" />
               <span class="icon-label">always traveling</span>
             </div>
             <div class="icon-item" data-icon="doll-figure">
-              <img src="assets/icons/icon-doll-figure.png" alt="" role="presentation" decoding="async" />
+              <img src="assets/icons/icon-doll-figure.png" alt="" role="presentation" loading="lazy" decoding="async" />
               <span class="icon-label">the brand</span>
             </div>
             <div class="icon-item" data-icon="notebook">
-              <img src="assets/icons/icon-notebook.png" alt="" role="presentation" decoding="async" />
+              <img src="assets/icons/icon-notebook.png" alt="" role="presentation" loading="lazy" decoding="async" />
               <span class="icon-label">reflection</span>
             </div>
             <div class="icon-item" data-icon="croissant">
-              <img src="assets/icons/icon-croissant.png" alt="" role="presentation" decoding="async" />
+              <img src="assets/icons/icon-croissant.png" alt="" role="presentation" loading="lazy" decoding="async" />
               <span class="icon-label">slow mornings</span>
             </div>
             <div class="icon-item" data-icon="phone">
-              <img src="assets/icons/icon-phone.png" alt="" role="presentation" decoding="async" />
+              <img src="assets/icons/icon-phone.png" alt="" role="presentation" loading="lazy" decoding="async" />
               <span class="icon-label">content</span>
             </div>
             <div class="icon-item" data-icon="books">
-              <img src="assets/icons/icon-books.png" alt="" role="presentation" decoding="async" />
+              <img src="assets/icons/icon-books.png" alt="" role="presentation" loading="lazy" decoding="async" />
               <span class="icon-label">always learning</span>
             </div>
           </div>
 
           <div class="confetti-stage" data-confetti-stage aria-hidden="true"></div>
-
-          <h2 class="scene-caption">this year, in objects ✨</h2>
         </div>
 
         <p class="scene-hint scene-hint--delayed">tap to continue</p>
@@ -173,21 +197,349 @@
         data-scene="3"
         aria-label="Scene 3"
         aria-hidden="true"
-      ></section>
+      >
+        <img
+          class="scene-bg"
+          src="assets/backgrounds/bg-3-book.png"
+          alt=""
+          role="presentation"
+          loading="lazy" decoding="async"
+        />
+
+        <div class="scene-content">
+          <div class="scene-3-intro">
+            <h2 class="scene-3-heading">a look back</h2>
+            <p class="scene-3-subtitle">achievement pages from this year</p>
+          </div>
+
+          <p class="book-caption" data-book-caption></p>
+
+          <button
+            class="book-stage"
+            type="button"
+            aria-label="Open the book"
+            data-book-stage
+          >
+            <img
+              class="book-closed"
+              src="assets/elements/book-closed.png"
+              alt=""
+              role="presentation"
+              loading="lazy" decoding="async"
+            />
+
+            <div class="book-opened-stage" data-book-opened-stage>
+              <img
+                class="book-opened"
+                src="assets/elements/book-opened.png"
+                alt=""
+                role="presentation"
+                loading="lazy" decoding="async"
+              />
+
+              <div class="book-page" data-page="1">
+                <img
+                  src="assets/pages/page-1-portfolio.png"
+                  alt=""
+                  role="presentation"
+                  loading="lazy" decoding="async"
+                />
+              </div>
+
+              <div class="book-page" data-page="2">
+                <img
+                  src="assets/pages/page-2-devpost.png"
+                  alt=""
+                  role="presentation"
+                  loading="lazy" decoding="async"
+                />
+              </div>
+
+              <div class="book-page" data-page="3">
+                <img
+                  src="assets/pages/page-3-instagram.png"
+                  alt=""
+                  role="presentation"
+                  loading="lazy" decoding="async"
+                />
+              </div>
+
+              <div class="book-page" data-page="4">
+                <img
+                  class="page-card page-card--left"
+                  src="assets/pages/page-4-spec-ai.png"
+                  alt=""
+                  role="presentation"
+                  loading="lazy" decoding="async"
+                />
+                <img
+                  class="page-card page-card--right"
+                  src="assets/pages/page-4-espresso.png"
+                  alt=""
+                  role="presentation"
+                  loading="lazy" decoding="async"
+                />
+              </div>
+            </div>
+          </button>
+        </div>
+
+        <p class="page-indicator" data-page-indicator>0 / 4</p>
+
+        <p class="scene-hint">tap to open</p>
+
+        <button
+          class="tap-zone"
+          type="button"
+          aria-label="Tap to continue"
+          data-tap-advance="3"
+          data-disabled="true"
+          tabindex="-1"
+        ></button>
+      </section>
 
       <section
         class="scene scene-4"
         data-scene="4"
         aria-label="Scene 4"
         aria-hidden="true"
-      ></section>
+      >
+        <img
+          class="scene-bg"
+          src="assets/backgrounds/bg-4-letters.png"
+          alt=""
+          role="presentation"
+          loading="lazy" decoding="async"
+        />
+
+        <div class="scene-content scene-4__layout">
+          <figure class="polaroid polaroid--1">
+            <img
+              src="assets/photos/photo-1.png"
+              alt=""
+              role="presentation"
+              loading="lazy" decoding="async"
+            />
+          </figure>
+
+          <figure class="polaroid polaroid--2">
+            <img
+              src="assets/photos/photo-2.png"
+              alt=""
+              role="presentation"
+              loading="lazy" decoding="async"
+            />
+          </figure>
+
+          <figure class="polaroid polaroid--3">
+            <img
+              src="assets/photos/photo-3.png"
+              alt=""
+              role="presentation"
+              loading="lazy" decoding="async"
+            />
+          </figure>
+
+          <button
+            class="envelope envelope--1"
+            type="button"
+            aria-label="Open letter to past me"
+            data-envelope="1"
+          >
+            <img
+              class="envelope-img envelope-closed"
+              src="assets/elements/envelope-closed.png"
+              alt=""
+              role="presentation"
+              loading="lazy" decoding="async"
+            />
+            <img
+              class="envelope-img envelope-opened"
+              src="assets/elements/envelope-opened.png"
+              alt=""
+              role="presentation"
+              loading="lazy" decoding="async"
+            />
+          </button>
+
+          <button
+            class="envelope envelope--2"
+            type="button"
+            aria-label="Open letter to future me"
+            data-envelope="2"
+          >
+            <img
+              class="envelope-img envelope-closed"
+              src="assets/elements/envelope-closed.png"
+              alt=""
+              role="presentation"
+              loading="lazy" decoding="async"
+            />
+            <img
+              class="envelope-img envelope-opened"
+              src="assets/elements/envelope-opened.png"
+              alt=""
+              role="presentation"
+              loading="lazy" decoding="async"
+            />
+          </button>
+        </div>
+
+        <div
+          class="letter-backdrop"
+          data-letter-backdrop
+          aria-hidden="true"
+        ></div>
+
+        <div class="letter-card" data-letter="1" aria-hidden="true">
+          <p>Dear past me,</p>
+          <p>
+            Thank you. For every late night you didn't give up. For every "I
+            don't know how" you turned into "let me try." For showing up even
+            when no one was watching.
+          </p>
+          <p>
+            You didn't waste a single day.<br />
+            You were just becoming.
+          </p>
+          <p>— love, you 🤍</p>
+          <p class="letter-close-hint">tap envelope to close</p>
+        </div>
+
+        <div class="letter-card" data-letter="2" aria-hidden="true">
+          <p>Dear future me,</p>
+          <p>
+            I hope you're resting more. I hope you said yes to the scary thing.
+            I hope you're still making things that feel like you.
+          </p>
+          <p>
+            More slow mornings. More wins that are quietly yours. More trust in
+            the timing.
+          </p>
+          <p>Make a wish — and mean it. ✨</p>
+          <p>— love, you 🤍</p>
+          <p class="letter-close-hint">tap envelope to close</p>
+        </div>
+
+        <p class="scene-hint scene-hint--advance" aria-hidden="true">✨</p>
+      </section>
 
       <section
         class="scene scene-5"
         data-scene="5"
         aria-label="Scene 5"
         aria-hidden="true"
-      ></section>
+      >
+        <img
+          class="scene-bg"
+          src="assets/backgrounds/bg-5-cake.png"
+          alt=""
+          role="presentation"
+          loading="lazy" decoding="async"
+        />
+
+        <div class="ambient-confetti" data-ambient-confetti aria-hidden="true"></div>
+
+        <div class="scene-content scene-5__layout">
+          <h2 class="scene-caption scene-5__caption">make a wish</h2>
+
+          <div class="cake-area">
+            <div class="cake-stage" data-cake-stage>
+              <svg
+                class="cake-svg"
+                viewBox="0 0 2070 2070"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <g clip-path="url(#clip-cake-lit)">
+                  <path
+                    d="M1035 2070C1606.61 2070 2070 1812.56 2070 1495C2070 1177.44 1606.61 920 1035 920C463.385 920 0 1177.44 0 1495C0 1812.56 463.385 2070 1035 2070Z"
+                    fill="#8899A6"
+                  />
+                  <path
+                    d="M1035 1969.38C1606.61 1969.38 2070 1711.94 2070 1394.38C2070 1076.81 1606.61 819.375 1035 819.375C463.385 819.375 0 1076.81 0 1394.38C0 1711.94 463.385 1969.38 1035 1969.38Z"
+                    fill="#CCD6DD"
+                  />
+                  <path
+                    d="M1878.81 1361.89C1878.81 1606.84 1501.04 1805.33 1035 1805.33C568.963 1805.33 191.188 1606.84 191.188 1361.89C191.188 1117.05 568.963 918.504 1035 918.504C1500.98 918.504 1878.81 1117.05 1878.81 1361.89Z"
+                    fill="#DD2E44"
+                  />
+                  <path
+                    d="M1853.4 1296.22C1853.4 1862.83 216.602 1862.83 216.602 1296.22V792.582H1853.4V1296.22Z"
+                    fill="#F4ABBA"
+                  />
+                  <path
+                    d="M1034.08 1044.55C517.5 1044.55 216.545 806.957 216.545 806.957C216.545 806.957 215.625 860.087 215.625 903.845C215.625 903.845 217.465 1185.48 363.515 1185.48C504.908 1185.48 494.615 1320.49 583.97 1334.46C672.578 1348.32 682.41 1280.53 792.408 1280.53C902.405 1280.53 921.783 1401.62 1034.08 1401.62C1165.7 1401.62 1176.51 1280.53 1286.45 1280.53C1396.39 1280.53 1409.04 1350.91 1481.14 1331.41C1567.8 1307.95 1527.95 1185.54 1704.65 1185.54C1850.7 1185.54 1854.32 918.277 1854.32 918.277C1854.32 874.577 1853.34 807.014 1853.34 807.014C1853.34 807.014 1550.72 1044.55 1034.08 1044.55Z"
+                    fill="#DD2E44"
+                  />
+                  <path
+                    d="M1878.81 732.378C1878.81 977.27 1501.04 1175.82 1035 1175.82C568.963 1175.82 191.188 977.27 191.188 732.378C191.188 487.485 568.963 288.938 1035 288.938C1500.98 288.938 1878.81 487.485 1878.81 732.378Z"
+                    fill="#EA596E"
+                  />
+                  <path
+                    d="M1475.68 792.58C1440.89 792.58 1412.72 764.405 1412.72 729.617V288.937C1412.72 272.238 1419.35 256.224 1431.16 244.416C1442.97 232.608 1458.98 225.975 1475.68 225.975C1492.38 225.975 1508.39 232.608 1520.2 244.416C1532.01 256.224 1538.64 272.238 1538.64 288.937V729.617C1538.64 764.405 1510.47 792.58 1475.68 792.58Z"
+                    fill="#FFF8E8"
+                  />
+                  <path
+                    d="M1035 981.409C1000.21 981.409 972.039 953.234 972.039 918.446V477.824C972.039 469.555 973.668 461.368 976.832 453.729C979.996 446.09 984.634 439.149 990.48 433.303C996.327 427.456 1003.27 422.818 1010.91 419.654C1018.55 416.49 1026.73 414.861 1035 414.861C1043.27 414.861 1051.46 416.49 1059.1 419.654C1066.74 422.818 1073.68 427.456 1079.52 433.303C1085.37 439.149 1090.01 446.09 1093.17 453.729C1096.34 461.368 1097.96 469.555 1097.96 477.824V918.504C1097.96 953.234 1069.79 981.409 1035 981.409Z"
+                    fill="#FFF8E8"
+                  />
+                  <path
+                    d="M594.322 792.58C559.534 792.58 531.359 764.405 531.359 729.617V288.937C531.359 280.669 532.988 272.481 536.152 264.842C539.316 257.203 543.954 250.263 549.801 244.416C555.647 238.569 562.588 233.932 570.227 230.767C577.866 227.603 586.054 225.975 594.322 225.975C602.59 225.975 610.778 227.603 618.417 230.767C626.056 233.932 632.996 238.569 638.843 244.416C644.69 250.263 649.327 257.203 652.492 264.842C655.656 272.481 657.284 280.669 657.284 288.937V729.617C657.284 764.405 629.109 792.58 594.322 792.58Z"
+                    fill="#FFF8E8"
+                  />
+                  <g id="flames">
+                    <path
+                      id="flame-left"
+                      d="M1475.68 383.353C1408.86 383.353 1356.31 352.763 1335.09 301.531C1316.69 257.083 1307.55 160.656 1453.43 14.8358C1456.35 11.9115 1459.82 9.59162 1463.63 8.00882C1467.45 6.42602 1471.54 5.61133 1475.68 5.61133C1479.81 5.61133 1483.9 6.42602 1487.72 8.00882C1491.54 9.59162 1495.01 11.9115 1497.93 14.8358C1643.81 160.713 1634.67 257.083 1616.27 301.531C1595.05 352.763 1542.49 383.353 1475.68 383.353Z"
+                      fill="#FAAA35"
+                    />
+                    <path
+                      id="flame-center"
+                      d="M1035 572.24C968.185 572.24 915.63 541.65 894.413 490.418C875.955 445.97 866.871 349.543 1012.75 203.722C1015.67 200.798 1019.14 198.478 1022.96 196.896C1026.77 195.313 1030.87 194.498 1035 194.498C1039.13 194.498 1043.23 195.313 1047.04 196.896C1050.86 198.478 1054.33 200.798 1057.25 203.722C1203.13 349.6 1193.99 445.97 1175.59 490.418C1154.37 541.65 1101.82 572.24 1035 572.24Z"
+                      fill="#FAAA35"
+                    />
+                    <path
+                      id="flame-right"
+                      d="M594.321 383.353C527.506 383.353 474.951 352.763 453.733 301.531C435.276 257.083 426.191 160.656 572.068 14.8358C574.989 11.9115 578.458 9.59162 582.276 8.00882C586.095 6.42602 590.188 5.61133 594.321 5.61133C598.454 5.61133 602.547 6.42602 606.365 8.00882C610.183 9.59162 613.652 11.9115 616.573 14.8358C762.451 160.713 753.308 257.083 734.908 301.531C713.691 352.763 661.136 383.353 594.321 383.353Z"
+                      fill="#FAAA35"
+                    />
+                  </g>
+                </g>
+                <defs>
+                  <clipPath id="clip-cake-lit">
+                    <rect width="2070" height="2070" fill="white" />
+                  </clipPath>
+                </defs>
+              </svg>
+
+              <div class="smoke-stage" data-smoke-stage aria-hidden="true"></div>
+              <div class="burst-stage" data-burst-stage aria-hidden="true"></div>
+            </div>
+
+            <button
+              class="tap-zone cake-tap-zone"
+              type="button"
+              aria-label="Tap the candle"
+              data-cake-tap
+            ></button>
+          </div>
+
+          <p class="scene-hint scene-5__hint">tap the candle ✨</p>
+        </div>
+
+        <div
+          class="final-message"
+          data-final-message
+          aria-hidden="true"
+        >
+          <p>whoosh 🕯️</p>
+          <p>You worked so hard this year.</p>
+          <p>Your wish is on its way. ✨</p>
+          <p>Happy birthday.</p>
+        </div>
+      </section>
     </main>
 
     <script src="script.js" defer></script>

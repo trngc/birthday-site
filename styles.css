@@ -65,6 +65,48 @@ body {
   touch-action: manipulation;
 }
 
+body.is-ready .preloader {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ---------- Preloader ---------- */
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-text-bg);
+  transition: opacity 0.4s var(--ease-out), visibility 0s linear 0.4s;
+}
+
+.preloader__text {
+  font-family: var(--font-hand);
+  font-size: 1.3rem;
+  color: var(--color-text-dark);
+  letter-spacing: 0.04em;
+}
+
+.preloader__dots {
+  display: inline-block;
+  animation: preloader-dots 1.2s steps(4, end) infinite;
+}
+
+@keyframes preloader-dots {
+  0% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+
 button {
   font-family: inherit;
   border: none;
@@ -146,6 +188,11 @@ img {
 .sound-toggle__icon {
   display: inline-block;
   pointer-events: none;
+  transition: transform var(--dur-micro) var(--ease-soft);
+}
+
+.sound-toggle.is-on .sound-toggle__icon {
+  transform: scale(1.08);
 }
 
 /* ---------- Shared scene primitives ---------- */
@@ -186,7 +233,7 @@ img {
   transform: translateX(-50%);
   z-index: 2;
   font-family: var(--font-hand);
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   color: var(--color-text-dark);
   opacity: 0.6;
   white-space: nowrap;
@@ -218,7 +265,7 @@ img {
 /* ---------- Scene 1 — Hero ---------- */
 .scene-1 .hero-title {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 8vw, 3rem);
+  font-size: clamp(2.5rem, 10vw, 3.5rem);
   font-weight: 500;
   color: var(--color-text-dark);
   letter-spacing: -0.02em;
@@ -230,7 +277,7 @@ img {
 
 .scene-1 .hero-subtitle {
   font-family: var(--font-body);
-  font-size: 0.9rem;
+  font-size: 1.1rem;
   color: var(--color-text-dark);
   margin-top: 0.5rem;
   letter-spacing: 0.02em;
@@ -255,6 +302,30 @@ img {
 }
 
 /* ---------- Scene 2 — Year in 10 Objects (Box) ---------- */
+.scene-2 .scene-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+}
+
+.scene-caption {
+  font-family: var(--font-hand);
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: white;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  max-width: 85%;
+  margin: env(safe-area-inset-top, 0px) auto 0;
+  padding-top: 5vh;
+  position: relative;
+  line-height: 1.2;
+  pointer-events: none;
+  z-index: 2;
+}
+
 .scene-2 .box-stage {
   position: relative;
   width: 200px;
@@ -340,7 +411,7 @@ img {
 
 .scene-2 .icon-label {
   font-family: var(--font-body);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--color-text-dark);
   opacity: 0;
@@ -368,21 +439,605 @@ img {
   will-change: transform, opacity;
 }
 
-.scene-2 .scene-caption {
+/* ---------- Scene 3 — Year One (Book) ---------- */
+.scene-3 .scene-3-intro {
   position: absolute;
-  bottom: calc(15vh + env(safe-area-inset-bottom, 0px));
+  top: 8vh;
   left: 50%;
   transform: translateX(-50%);
-  font-family: var(--font-hand);
-  font-size: 1.2rem;
-  font-weight: 500;
-  color: var(--color-text-dark);
-  opacity: 0.7;
   text-align: center;
-  white-space: nowrap;
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
+  z-index: 2;
+  width: 90%;
+  opacity: 1;
+  transition: opacity 0.4s var(--ease-soft);
+}
+
+.scene-3 .scene-3-intro.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.scene-3 .scene-3-heading {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 500;
+  color: white;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  margin: 0 0 6px;
+}
+
+.scene-3 .scene-3-subtitle {
+  font-family: var(--font-hand);
+  font-size: 1.3rem;
+  color: white;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  opacity: 0.85;
+  margin: 0;
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+}
+
+.scene-3 .book-stage {
+  position: relative;
+  width: 100vw;
+  max-width: none;
+  aspect-ratio: 1 / 0.85;
+  margin: 0 auto;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: none;
+  border: none;
+  pointer-events: auto;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.scene-3 .book-stage:focus-visible {
+  outline: 2px solid var(--color-text-bg);
+  outline-offset: 6px;
+  border-radius: 12px;
+}
+
+.scene-3 .book-closed,
+.scene-3 .book-opened {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.scene-3 .book-opened-stage {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-soft);
+}
+
+.scene-3 .book-opened-stage.is-visible {
+  opacity: 1;
+}
+
+.scene-3 .book-page {
+  position: absolute;
+  top: 28%;
+  right: 22%;
+  bottom: 28%;
+  left: 22%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all 0.3s var(--ease-soft);
   pointer-events: none;
   z-index: 2;
+}
+
+.scene-3 .book-page.is-active {
+  opacity: 1;
+}
+
+/* Constrain img with explicit width AND height so wide PNGs scale to fit. */
+.scene-3 .book-page > img:not(.page-card) {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  display: block;
+}
+
+.scene-3 .page-card {
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  object-fit: contain;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: block;
+}
+
+.scene-3 .page-card--left {
+  left: 0;
+  top: 0;
+  transform: rotate(-4deg);
+  z-index: 1;
+}
+
+.scene-3 .page-card--right {
+  right: 0;
+  bottom: 0;
+  transform: rotate(5deg);
+  z-index: 2;
+}
+
+.scene-3 .scene-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px);
+  gap: 0;
+}
+
+.scene-3 .book-caption {
+  font-family: var(--font-hand);
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: white;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  max-width: 85%;
+  margin-top: 0;
+  margin-bottom: 16px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  line-height: 1.2;
+}
+
+.scene-3 .book-caption.is-visible {
+  opacity: 1;
+}
+
+.scene-3 .page-indicator {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: white;
+  opacity: 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  bottom: calc(8vh + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  letter-spacing: 0.15em;
+  transition: opacity 0.3s;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.scene-3 .page-indicator.is-visible {
+  opacity: 0.7;
+}
+
+.scene-3 .scene-hint {
+  color: white;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Idle pulse on book before opened */
+.scene-3 .book-closed {
+  animation: book-pulse 2.5s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes book-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+}
+
+.scene-3 .book-stage.is-opened {
+  cursor: default;
+}
+
+.scene-3 .book-stage.is-opened .book-closed {
+  opacity: 0;
+  animation: none;
+}
+
+/* ---------- Scene 4 — Letters to self ---------- */
+.scene-4__layout {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+
+.scene-4 .polaroid {
+  position: absolute;
+  width: 38vw;
+  max-width: 180px;
+  background: white;
+  padding: 8px 8px 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 2px;
+  pointer-events: none;
+  margin: 0;
+}
+
+.scene-4 .polaroid img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.scene-4 .polaroid--1 {
+  top: 8vh;
+  left: 6vw;
+  transform: rotate(-8deg);
+}
+
+.scene-4 .polaroid--2 {
+  top: 10vh;
+  right: 6vw;
+  transform: rotate(6deg);
+}
+
+.scene-4 .polaroid--3 {
+  bottom: 20vh;
+  left: 5vw;
+  transform: rotate(-5deg);
+}
+
+.scene-4 .envelope {
+  position: absolute;
+  width: 50vw;
+  max-width: 240px;
+  min-width: 48px;
+  min-height: 48px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  pointer-events: auto;
+  transform-origin: center bottom;
+  -webkit-tap-highlight-color: transparent;
+  z-index: 2;
+}
+
+.scene-4 .envelope:focus-visible {
+  outline: 2px solid var(--color-text-bg);
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+
+.scene-4 .envelope--1 {
+  top: 38vh;
+  left: 50%;
+  transform: translateX(-55%) rotate(3deg);
+}
+
+.scene-4 .envelope--2 {
+  bottom: 14vh;
+  right: 2vw;
+  transform: rotate(-4deg);
+}
+
+.scene-4 .envelope.is-open {
+  z-index: 101;
+}
+
+.scene-4 .envelope img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.12));
+}
+
+.scene-4 .envelope-opened {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+.scene-4 .envelope.is-open .envelope-closed {
+  opacity: 0;
+}
+
+.scene-4 .envelope.is-open .envelope-opened {
+  opacity: 1;
+}
+
+.scene-4 .letter-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s var(--ease-soft);
+  z-index: 99;
+}
+
+.scene-4 .letter-backdrop.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.scene-4 .letter-card {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.92);
+  width: 85vw;
+  max-width: 380px;
+  height: auto;
+  max-height: 75vh;
+  background: var(--color-text-bg);
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+  padding: 36px 28px;
+  overflow-y: auto;
+  z-index: 102;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s var(--ease-soft), transform 0.4s var(--ease-soft);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.scene-4 .letter-card.is-visible {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  pointer-events: auto;
+}
+
+.scene-4 .letter-card p {
+  font-family: var(--font-hand);
+  font-size: 1.35rem;
+  color: var(--color-text-dark);
+  line-height: 1.6;
+  margin: 0 0 12px;
+  text-align: left;
+}
+
+.scene-4 .letter-card .letter-close-hint {
+  margin-top: 20px;
+  margin-bottom: 0;
+  font-size: 0.95rem;
+  opacity: 0.5;
+  text-align: center;
+  font-family: var(--font-body);
+}
+
+.scene-4 .scene-hint--advance {
+  opacity: 0;
+  visibility: hidden;
+  animation: none;
+  font-size: 1.5rem;
+  color: white;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.scene-4 .scene-hint--advance.is-visible {
+  visibility: visible;
+  animation: hint-bob 2s ease-in-out infinite;
+}
+
+/* ---------- Scene 5 — Make a wish (Cake) ---------- */
+.scene-5__layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px);
+}
+
+.scene-5 .ambient-confetti {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.scene-5 .scene-caption.scene-5__caption {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: white;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  margin-bottom: 32px;
+  opacity: 0;
+  transition: opacity 0.8s var(--ease-soft);
+  position: relative;
+  z-index: 2;
+}
+
+.scene-5 .scene-caption.scene-5__caption.is-visible {
+  opacity: 1;
+}
+
+.scene-5 .cake-area {
+  position: relative;
+  width: 80vw;
+  max-width: 360px;
+  z-index: 2;
+}
+
+.scene-5 .cake-stage {
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+}
+
+.scene-5 .cake-stage svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.scene-5 #flames {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+
+.scene-5 #flame-left {
+  transform-origin: 50% 100%;
+  transform-box: fill-box;
+  animation: flicker-left 0.9s ease-in-out infinite alternate;
+}
+
+.scene-5 #flame-center {
+  transform-origin: 50% 100%;
+  transform-box: fill-box;
+  animation: flicker-center 1.1s ease-in-out infinite alternate;
+  animation-delay: 0.2s;
+}
+
+.scene-5 #flame-right {
+  transform-origin: 50% 100%;
+  transform-box: fill-box;
+  animation: flicker-right 0.8s ease-in-out infinite alternate;
+  animation-delay: 0.4s;
+}
+
+@keyframes flicker-left {
+  0% {
+    transform: scale(1) rotate(-2deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.08) rotate(1deg);
+    opacity: 0.95;
+  }
+}
+
+@keyframes flicker-center {
+  0% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.1) rotate(-1deg);
+    opacity: 0.94;
+  }
+}
+
+@keyframes flicker-right {
+  0% {
+    transform: scale(1) rotate(2deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.07) rotate(-1deg);
+    opacity: 0.96;
+  }
+}
+
+
+.scene-5 .smoke-stage,
+.scene-5 .burst-stage {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.scene-5 .smoke-stage {
+  top: 0;
+  height: 45%;
+}
+
+.scene-5 .smoke-stage svg {
+  position: absolute;
+  left: 50%;
+  top: 55%;
+  transform: translateX(-50%);
+  width: 140px;
+  height: 120px;
+  overflow: visible;
+}
+
+.scene-5 .scene-hint.scene-5__hint {
+  color: white;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  margin-top: 32px;
+  position: relative;
+  z-index: 2;
+}
+
+.scene-5 .cake-tap-zone {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.scene-5 .final-message {
+  position: absolute;
+  top: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 85%;
+  max-width: 380px;
+  text-align: center;
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s var(--ease-soft);
+}
+
+.scene-5 .final-message.is-visible {
+  opacity: 1;
+}
+
+.scene-5 .final-message p {
+  font-family: var(--font-display);
+  color: white;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  line-height: 1.6;
+  margin: 0 0 10px;
+}
+
+.scene-5 .final-message p:first-child {
+  font-family: var(--font-hand);
+  font-size: 1.5rem;
+  opacity: 0.85;
+  margin-bottom: 24px;
+}
+
+.scene-5 .final-message p:nth-child(2),
+.scene-5 .final-message p:nth-child(3) {
+  font-size: 1.4rem;
+}
+
+.scene-5 .final-message p:last-child {
+  font-style: italic;
+  font-size: 1.6rem;
+  font-weight: 500;
+  margin-top: 16px;
+  margin-bottom: 0;
+}
+
+.confetti-particle {
+  position: absolute;
+  pointer-events: none;
+  will-change: transform, opacity;
+  top: 0;
+  left: 0;
 }
 
 /* ---------- Reduced motion fallback ---------- */
